@@ -142,33 +142,35 @@ if __name__=="__main__":
     # 添加参数步骤
     parser.add_argument('--ispretrain', defalt=True, type=bool,
                    help='whether is process pretraining data')
-    parser.add_argument('--sum', dest='accumulate', action='store_const',
-                   const=sum, default=max,
-                   help='sum the integers')
     # 解析参数步骤  
     args = parser.parse_args()
     print(args.ispretrain)
-    tokenizer=ChatGLMTokenizer(vocab_file='./chatglm_tokenizer/tokenizer.model')
-    ##1.对不同的数据集生成.bin文件
-    process_wiki_clean()
-    process_medical('./data/medical/pretrain/medical_book_zh.json','book')
-    process_medical('./data/medical/pretrain/train_encyclopedia.json','encyclopedia')
-    process_baidu()
-    # sft_to_pretrain()
-    # sft_process()
-    ##2.将不同的预训练数据集合并成一个pretrain.bin文件
-    data_path_list=[
-        './data/baidubaike_563w.bin',
-        './data/medical_book.bin',
-        './data/medical_encyclopedia.bin',
-        './data/wiki.bin'
-    ]
-    data_lst=[]
-    for data_path in data_path_list:
-        with open(data_path,'rb') as f:
-            data=np.fromfile(f,dtype=np.uint16)
-            data_lst.append(data)
-    arr = np.concatenate(data_lst)
-    print(arr.shape)
-    with open('./data/pretrain_data.bin','wb') as f:
-        f.write(arr.tobytes())
+    if args.ispretrain:
+        print("Processing pre-training data")
+        tokenizer=ChatGLMTokenizer(vocab_file='./chatglm_tokenizer/tokenizer.model')
+        ##1.对不同的数据集生成.bin文件
+        process_wiki_clean()
+        process_medical('./data/medical/pretrain/medical_book_zh.json','book')
+        process_medical('./data/medical/pretrain/train_encyclopedia.json','encyclopedia')
+        process_baidu()
+        # sft_to_pretrain()
+        # sft_process()
+        ##2.将不同的预训练数据集合并成一个pretrain.bin文件
+        data_path_list=[
+            './data/baidubaike_563w.bin',
+            './data/medical_book.bin',
+            './data/medical_encyclopedia.bin',
+            './data/wiki.bin'
+        ]
+        data_lst=[]
+        for data_path in data_path_list:
+            with open(data_path,'rb') as f:
+                data=np.fromfile(f,dtype=np.uint16)
+                data_lst.append(data)
+        arr = np.concatenate(data_lst)
+        print(arr.shape)
+        with open('./data/pretrain_data.bin','wb') as f:
+            f.write(arr.tobytes())
+    else:
+        print("Processing non-pre-training data")
+        pass
