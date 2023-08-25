@@ -1,4 +1,5 @@
 import json
+import argparse
 import glob
 import numpy as np
 from tqdm import tqdm
@@ -136,6 +137,17 @@ def process_baidu():
             
     
 if __name__=="__main__":
+    # 创建解析步骤
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    # 添加参数步骤
+    parser.add_argument('--ispretrain', defalt=True, type=bool,
+                   help='whether is process pretraining data')
+    parser.add_argument('--sum', dest='accumulate', action='store_const',
+                   const=sum, default=max,
+                   help='sum the integers')
+    # 解析参数步骤  
+    args = parser.parse_args()
+    print(args.ispretrain)
     tokenizer=ChatGLMTokenizer(vocab_file='./chatglm_tokenizer/tokenizer.model')
     ##1.对不同的数据集生成.bin文件
     process_wiki_clean()
