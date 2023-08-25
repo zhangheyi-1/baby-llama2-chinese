@@ -139,8 +139,8 @@ if __name__=="__main__":
     tokenizer=ChatGLMTokenizer(vocab_file='./chatglm_tokenizer/tokenizer.model')
     ##1.对不同的数据集生成.bin文件
     process_wiki_clean()
-    process_medical('./data/medical_book_zh.json','book')
-    process_medical('./data/train_encyclopedia.json','encyclopedia')
+    process_medical('./data/medical/pretrain/medical_book_zh.json','book')
+    process_medical('./data/medical/pretrain/train_encyclopedia.json','encyclopedia')
     process_baidu()
     # sft_to_pretrain()
     # sft_process()
