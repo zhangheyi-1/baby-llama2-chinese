@@ -137,12 +137,14 @@ def process_baidu():
     
 if __name__=="__main__":
     tokenizer=ChatGLMTokenizer(vocab_file='./chatglm_tokenizer/tokenizer.model')
-    # process_wiki_clean()
-    # process_medical('./data/medical_book_zh.json','book')
-    # process_medical('./data/train_encyclopedia.json','encyclopedia')
+    ##1.对不同的数据集生成.bin文件
+    process_wiki_clean()
+    process_medical('./data/medical_book_zh.json','book')
+    process_medical('./data/train_encyclopedia.json','encyclopedia')
+    process_baidu()
     # sft_to_pretrain()
     # sft_process()
-    #process_baidu()
+    ##2.将不同的预训练数据集合并成一个pretrain.bin文件
     data_path_list=[
         './data/baidubaike_563w.bin',
         './data/medical_book.bin',
